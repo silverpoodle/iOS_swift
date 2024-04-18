@@ -5,7 +5,8 @@
 - 여백 고정기능
 - View 크기 조절 기능
 
-![스크린샷 2024-04-18 오후 12.18.19](/Users/jungin/Library/Application Support/typora-user-images/스크린샷 2024-04-18 오후 12.18.19.png)
+<img width="600" alt="스크린샷 2024-04-18 오후 12 17 35" src="https://github.com/silverpoodle/iOS_swift/assets/88484476/d4c88dc2-de30-4510-b424-2596b94f1343">
+
 
 <br/>
 
@@ -40,8 +41,7 @@
 
 ### 이웃
 
-![스크린샷 2024-04-18 오후 12.58.59](../../../Library/Application Support/typora-user-images/스크린샷 2024-04-18 오후 12.58.59.png)
-
+<img width="200" src="https://github.com/silverpoodle/iOS_swift/assets/88484476/af96c8b6-7924-4158-910f-97a8391c53ef">
 
 
 <br/>
@@ -56,19 +56,16 @@
 
 <br/>
 
-![스크린샷 2024-04-18 오후 12.50.04](../../../Library/Application Support/typora-user-images/스크린샷 2024-04-18 오후 12.50.04.png)
-
-
-
+<img width="600" src="https://github.com/silverpoodle/iOS_swift/assets/88484476/ee404e29-0a88-440d-bbb7-d2ef20b48976">
 
 
 <br/>
-
+<br/>
 
 
 ### Safe Area
 
-<img src="https://miro.medium.com/v2/resize:fit:1400/1*PZST_giuCIKpXZkJh9u52Q.png" alt="Understanding 'superview' and 'safe area' to make you a better designer? |  by Kevin Auyeung | UX Collective" style="zoom:30%;" />
+<img src="https://miro.medium.com/v2/resize:fit:1400/1*PZST_giuCIKpXZkJh9u52Q.png" width="450" />
 
 - iOS 7에서 애플은 스크린 영역을 가리지 않도록 topLayoutGuide, bottomLayoutGuide 지정
 - iOS 11에서 이 속성들을 금지 시쳤고 safe area 를 도입
@@ -78,8 +75,7 @@
 
 ### 여백 계산
 
-![스크린샷 2024-04-18 오후 2.03.45](../../../Library/Application Support/typora-user-images/스크린샷 2024-04-18 오후 2.03.45.png)
-
+<img src="https://github.com/silverpoodle/iOS_swift/assets/88484476/b6f14013-f296-4070-89f0-e7e5a4e4a07a" width="600" />
 
 
 <br/><br/>
@@ -93,6 +89,8 @@
 
 
 > 💡**참고**
+> 
 >
 > https://blog.naver.com/book1693/221430415925
+> 
 > https://zeddios.tistory.com/1202
