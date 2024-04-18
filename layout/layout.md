@@ -15,10 +15,8 @@
   - 각 View 객체별로 설정 
 
   - 원하는 View 객체를 선택한 후 크기 속성 inspector 에서 설정
-
-    
-
-    ![스크린샷 2024-04-18 오후 12.24.27](../../../Library/Application Support/typora-user-images/스크린샷 2024-04-18 오후 12.24.27.png)
+ 
+    <img width="600" alt="스크린샷 2024-04-18 오후 12 17 35" src="https://github.com/silverpoodle/iOS_swift/assets/88484476/6ba73b20-5ae3-4fa4-b625-5065d4817d44">
 
     - View의 너비: 화면의 크기에 따라 비례하여 너비가 조절
     - View의 높이: 화면의 크기가 변하여도 높이는 고정 
