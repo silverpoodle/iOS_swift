@@ -31,7 +31,8 @@ print(y)
 
 ### Option + click
 
-![image-20240422124044450](../../../Library/Application Support/typora-user-images/image-20240422124044450.png)
+![image](https://github.com/silverpoodle/iOS_swift/assets/88484476/8b982025-3fff-4beb-9b8f-ba93c510ef1b)
+
 
 
 
