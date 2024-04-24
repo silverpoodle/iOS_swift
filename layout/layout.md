@@ -15,7 +15,7 @@
   - 각 View 객체별로 설정 
 
   - 원하는 View 객체를 선택한 후 크기 속성 inspector 에서 설정
- 
+
     <img width="600" alt="스크린샷 2024-04-18 오후 12 17 35" src="https://github.com/silverpoodle/iOS_swift/assets/88484476/6ba73b20-5ae3-4fa4-b625-5065d4817d44">
 
     - View의 너비: 화면의 크기에 따라 비례하여 너비가 조절
@@ -80,9 +80,58 @@
 
 ## ✏️ Review
 
-1. 
+1. Align Tool 활용
+
+   -  Align Tool은 뷰들을 정렬 시키는데 사용
+
+   - 원하는 뷰들을 선택하고 Align Tool을 클릭
+
+   - 팝업에서 적절한 제약조건을 선택후 추가
+
+   - **오토레이아웃은 View가 Satisfiable Layout가 아니면 적용되지 않음**
+
+     <br/>
+
+   <img src="../../../Library/Application Support/typora-user-images/스크린샷 2024-04-23 오후 9.47.49.png" alt="스크린샷 2024-04-23 오후 9.47.49" style="zoom:40%;" />
+
+<br/>
+
+2. (1) 의 AutoLayout 적용 결과
+
+![스크린샷 2024-04-23 오후 9.49.13](../../../Library/Application Support/typora-user-images/스크린샷 2024-04-23 오후 9.49.13.png)
+
+- constraint가 적용될때마다 Document Outline에 객체가 하나씩 생성 -> 현재 2개가 적용
+- Document Outline에서 선택된 constraint에 대하여 상세 내역 확인
+- constraint도 outlet 변수로 적용 가능
+
+<br/>
+
+3. Pin Tool 활용
+   - 뷰의 상대적 위치와 크기에 대한 제약조건을 적용
+   - 원하는 뷰를 선택하고 Pin Tool을 클릭
+
+![스크린샷 2024-04-23 오후 9.59.20](../../../Library/Application Support/typora-user-images/스크린샷 2024-04-23 오후 9.59.20.png)
 
 
+
+<br/>
+
+4. **허깅 우선순위(hugging priority)**
+
+   - 크기에 대한 설정이 없는 뷰 객체는 가장 낮은 우선순위
+
+     
+
+<img src="../../../Library/Application Support/typora-user-images/스크린샷 2024-04-23 오후 10.03.15.png" alt="스크린샷 2024-04-23 오후 10.03.15" style="zoom:30%;" />
+
+<br/>
+
+5. **압축저항 우선순위(compression resistance priority)**
+   - 크기에 대한 설정이 없는 뷰 객체는 가장 낮은 우선순위
+
+<img src="../../../Library/Application Support/typora-user-images/스크린샷 2024-04-23 오후 10.05.15.png" alt="스크린샷 2024-04-23 오후 10.05.15" style="zoom:30%;" />
+
+<br/>
 
 
 
