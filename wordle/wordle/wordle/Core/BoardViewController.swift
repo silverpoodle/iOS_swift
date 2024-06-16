@@ -108,31 +108,55 @@ class BoardViewController: UIViewController, UICollectionViewDelegateFlowLayout,
 //            present(wordAddedVC, animated: true, completion: nil)
 //        }
 //    }
+//    @objc func addButtonTapped() {
+//        guard let selectedRow = selectedRow, let currentGuesses = datasource?.currentGuesses else { return }
+//        let selectedGuess = currentGuesses[selectedRow].compactMap { $0 }.joined()
+//        if !selectedGuess.isEmpty {
+//            DictionaryAPI.shared.fetchMeaning(for: selectedGuess) { result in
+//                switch result {
+//                case .success(let meaning):
+//                    DispatchQueue.main.async {
+//                        let wordAddedVC = WordAddedViewController(word: selectedGuess, meaning: meaning)
+//                        MyWords.shared.addWord(selectedGuess, meaning: meaning)
+//                        wordAddedVC.modalPresentationStyle = .overFullScreen
+//                        self.present(wordAddedVC, animated: true, completion: nil)
+//                    }
+//                case .failure(let error):
+//                    DispatchQueue.main.async {
+//                        let wordAddedVC = WordAddedViewController(word: selectedGuess, meaning: "No definition found")
+//                        wordAddedVC.modalPresentationStyle = .overFullScreen
+//                        self.present(wordAddedVC, animated: true, completion: nil)
+//                    }
+//                    print("Error fetching meaning: \(error.localizedDescription)")
+//                }
+//            }
+//        }
+//    }
+    
     @objc func addButtonTapped() {
         guard let selectedRow = selectedRow, let currentGuesses = datasource?.currentGuesses else { return }
         let selectedGuess = currentGuesses[selectedRow].compactMap { $0 }.joined()
         if !selectedGuess.isEmpty {
-            DictionaryAPI.shared.fetchMeaning(for: selectedGuess) { result in
+            OpenAIAPI.shared.fetchWordDetails(for: selectedGuess) { result in
                 switch result {
-                case .success(let meaning):
+                case .success(let details):
                     DispatchQueue.main.async {
+                        let meaning = details.joined(separator: "\n")
                         let wordAddedVC = WordAddedViewController(word: selectedGuess, meaning: meaning)
-                        MyWords.shared.addWord(selectedGuess, meaning: meaning)
                         wordAddedVC.modalPresentationStyle = .overFullScreen
                         self.present(wordAddedVC, animated: true, completion: nil)
                     }
                 case .failure(let error):
                     DispatchQueue.main.async {
-                        let wordAddedVC = WordAddedViewController(word: selectedGuess, meaning: "No definition found")
+                        let wordAddedVC = WordAddedViewController(word: selectedGuess, meaning: "Error fetching details")
                         wordAddedVC.modalPresentationStyle = .overFullScreen
                         self.present(wordAddedVC, animated: true, completion: nil)
                     }
-                    print("Error fetching meaning: \(error.localizedDescription)")
+                    print("Error fetching details: \(error.localizedDescription)")
                 }
             }
         }
     }
-
 
 }
 
