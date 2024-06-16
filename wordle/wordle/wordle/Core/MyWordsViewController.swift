@@ -13,7 +13,7 @@ class MyWordsViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 246/225, green: 220/225, blue: 172/225, alpha: 1.0)
+        view.backgroundColor = UIColor(red: 246/255, green: 220/255, blue: 172/255, alpha: 1.0)
         title = "내 단어장"
 
         tableView.delegate = self
@@ -37,13 +37,19 @@ class MyWordsViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return MyWords.shared.words.count
+        return MyWords.shared.getAllWords().count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "wordCell", for: indexPath)
-        let word = MyWords.shared.words[indexPath.row]
-        cell.textLabel?.text = "\(word.word): \(word.meaning)"
+        let wordDetails = MyWords.shared.getAllWords()[indexPath.row]
+        if let word = wordDetails["word"],
+           let translation = wordDetails["translation"],
+           let sentence = wordDetails["sentence"],
+           let sentenceTranslation = wordDetails["sentenceTranslation"] {
+            cell.textLabel?.text = "\(word): \(translation)\n\(sentence)\n\(sentenceTranslation)"
+            cell.textLabel?.numberOfLines = 0 // 여러 줄을 표시하도록 설정
+        }
         return cell
     }
 
