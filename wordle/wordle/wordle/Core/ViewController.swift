@@ -75,7 +75,7 @@ class ViewController: UIViewController {
 
         view.layer.addSublayer(confettiLayer)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.3) {
             confettiLayer.birthRate = 0
         }
     }
@@ -84,8 +84,8 @@ class ViewController: UIViewController {
         var confettiCells: [CAEmitterCell] = []
         for _ in 0..<10 {
             let cell = CAEmitterCell()
-            cell.birthRate = 3
-            cell.lifetime = 10.0
+            cell.birthRate = 2.5
+            cell.lifetime = 8.0
             cell.velocity = CGFloat(350)
             cell.velocityRange = CGFloat(80)
             cell.emissionLongitude = .pi
@@ -233,6 +233,7 @@ extension ViewController: KeyBoardViewControllerDelegate {
         if correctPositions.count == answer.count {
 //                showResult(isWin: true)
             showConfetti()
+            
         } else if currentGuessIndex == guesses.count - 1 {
             showResult(isWin: false)
         } else {
