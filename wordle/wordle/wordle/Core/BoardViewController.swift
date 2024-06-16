@@ -16,6 +16,7 @@ protocol BoardViewControllerDataSource: AnyObject {
 class BoardViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
 
     weak var datasource: BoardViewControllerDataSource?
+    var selectedRow: Int?
 
     let myWordsButton: UIButton = {
         let button = UIButton(type: .system)
@@ -37,6 +38,7 @@ class BoardViewController: UIViewController, UICollectionViewDelegateFlowLayout,
         button.layer.cornerRadius = 10
         button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
     }()
 
@@ -93,6 +95,19 @@ class BoardViewController: UIViewController, UICollectionViewDelegateFlowLayout,
         let myWordsVC = MyWordsViewController()
         navigationController?.pushViewController(myWordsVC, animated: true)
     }
+    
+    @objc func addButtonTapped() {
+        guard let selectedRow = selectedRow, let currentGuesses = datasource?.currentGuesses else { return }
+        let selectedGuess = currentGuesses[selectedRow].compactMap { $0 }.joined()
+        if !selectedGuess.isEmpty {
+            let meaning = "Example meaning for \(selectedGuess)"
+            MyWords.shared.addWord(selectedGuess, meaning: meaning)
+
+            let wordAddedVC = WordAddedViewController(word: selectedGuess, meaning: meaning)
+            wordAddedVC.modalPresentationStyle = .overFullScreen
+            present(wordAddedVC, animated: true, completion: nil)
+        }
+    }
 
 }
 
@@ -106,22 +121,21 @@ extension BoardViewController {
         return guesses[section].count
     }
 
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BoardCell.identifier, for: indexPath) as? BoardCell else {
             fatalError()
         }
 
-        cell.contentView.backgroundColor = cellColors[indexPath] ?? .clear
+        let isSelected = (indexPath.section == selectedRow)
+        let color = cellColors[indexPath] ?? .clear
+        cell.configure(with: datasource?.currentGuesses[indexPath.section][indexPath.row] ?? "", color: color, isSelected: isSelected)
         cell.layer.borderWidth = 1
         cell.layer.borderColor = UIColor.systemGray3.cgColor
 
-        let guesses = datasource?.currentGuesses ?? []
-        if let letter = guesses[indexPath.section][indexPath.row] {
-            cell.configure(with: letter)
-        }
-
         return cell
     }
+
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let margin: CGFloat = 20
@@ -134,6 +148,8 @@ extension BoardViewController {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //
+        selectedRow = indexPath.section
+        collectionView.reloadData()
     }
+
 }

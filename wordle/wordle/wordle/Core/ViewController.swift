@@ -107,6 +107,7 @@ class ViewController: UIViewController {
         ]
         return colors.randomElement() ?? .white
     }
+
 }
 
 extension ViewController: KeyBoardViewControllerDelegate {
