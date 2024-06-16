@@ -173,12 +173,12 @@ extension ViewController: KeyBoardViewControllerDelegate {
            }
        }
    }
-    
-    func showInvalidWordAlert() {
-        let alert = UIAlertController(title: "Invalid Word", message: "The word you entered is not valid. Please try again.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
-    }
+//
+//    func showInvalidWordAlert() {
+//        let alert = UIAlertController(title: "Invalid Word", message: "The word you entered is not valid. Please try again.", preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//        present(alert, animated: true, completion: nil)
+//    }
     
     func checkGuess(guess: [String]) {
         guard guess.count == answer.count else { return }
@@ -281,20 +281,6 @@ extension ViewController {
         present(resultVC, animated: true, completion: nil)
     }
 }
-
-
-//extension ViewController: ResultViewControllerDelegate {
-//    func resetGameboard() {
-//        answer = answers.randomElement() ?? "AFTER"
-//        guesses = Array(repeating: Array(repeating: nil, count: 5), count: 6)
-//        currentGuessIndex = 0
-//        boardVC.cellColors.removeAll()
-//        boardVC.reloadData()
-//        keyboardVC.keyColors.removeAll()
-//        keyboardVC.reloadData()
-//    }
-//}
-
 
 extension ViewController: ResultViewControllerDelegate {
     func resetGameboard() {

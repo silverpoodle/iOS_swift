@@ -96,18 +96,43 @@ class BoardViewController: UIViewController, UICollectionViewDelegateFlowLayout,
         navigationController?.pushViewController(myWordsVC, animated: true)
     }
     
+//    @objc func addButtonTapped() {
+//        guard let selectedRow = selectedRow, let currentGuesses = datasource?.currentGuesses else { return }
+//        let selectedGuess = currentGuesses[selectedRow].compactMap { $0 }.joined()
+//        if !selectedGuess.isEmpty {
+//            let meaning = "Example meaning for \(selectedGuess)"
+//            MyWords.shared.addWord(selectedGuess, meaning: meaning)
+//
+//            let wordAddedVC = WordAddedViewController(word: selectedGuess, meaning: meaning)
+//            wordAddedVC.modalPresentationStyle = .overFullScreen
+//            present(wordAddedVC, animated: true, completion: nil)
+//        }
+//    }
     @objc func addButtonTapped() {
         guard let selectedRow = selectedRow, let currentGuesses = datasource?.currentGuesses else { return }
         let selectedGuess = currentGuesses[selectedRow].compactMap { $0 }.joined()
         if !selectedGuess.isEmpty {
-            let meaning = "Example meaning for \(selectedGuess)"
-            MyWords.shared.addWord(selectedGuess, meaning: meaning)
-
-            let wordAddedVC = WordAddedViewController(word: selectedGuess, meaning: meaning)
-            wordAddedVC.modalPresentationStyle = .overFullScreen
-            present(wordAddedVC, animated: true, completion: nil)
+            DictionaryAPI.shared.fetchMeaning(for: selectedGuess) { result in
+                switch result {
+                case .success(let meaning):
+                    DispatchQueue.main.async {
+                        let wordAddedVC = WordAddedViewController(word: selectedGuess, meaning: meaning)
+                        MyWords.shared.addWord(selectedGuess, meaning: meaning)
+                        wordAddedVC.modalPresentationStyle = .overFullScreen
+                        self.present(wordAddedVC, animated: true, completion: nil)
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        let wordAddedVC = WordAddedViewController(word: selectedGuess, meaning: "No definition found")
+                        wordAddedVC.modalPresentationStyle = .overFullScreen
+                        self.present(wordAddedVC, animated: true, completion: nil)
+                    }
+                    print("Error fetching meaning: \(error.localizedDescription)")
+                }
+            }
         }
     }
+
 
 }
 
