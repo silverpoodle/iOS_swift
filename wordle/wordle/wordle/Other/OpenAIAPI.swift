@@ -16,11 +16,11 @@ struct OpenAIAPI {
     func fetchWordDetails(for word: String, completion: @escaping (Result<[String], Error>) -> Void) {
         let systemPrompt = """
         Follow the steps below for word:
-        1. translate in Korean (less than 10 words)
-        2. write example sentence in English (less than 30 words)
-        3. translate sentence in Korean
+        translate in Korean (less than 10 words)
+        write example sentence in English (less than 30 words)
+        translate sentence in Korean
 
-        return response in list [1,2,3]
+        return response in list [ , , ]
         """
         
         let requestBody: [String: Any] = [

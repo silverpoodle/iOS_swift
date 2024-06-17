@@ -14,38 +14,38 @@ protocol KeyBoardViewControllerDelegate: AnyObject {
 }
 
 class KeyboardViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
-
+    
     weak var delegate: KeyBoardViewControllerDelegate?
-
+    
     var letters: [[String]] = [
-            ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
-            ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
-            ["DEL", "Z", "X", "C", "V", "B", "N", "M", "ENTER"]
-        ]
+        ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+        ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+        ["DEL", "Z", "X", "C", "V", "B", "N", "M", "ENTER"]
+    ]
     var keys: [[String]] = []
-
+    
     var keyColors: [String: UIColor] = [:]
-
+    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 2
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         collectionView.backgroundColor = .clear
-
+        
         collectionView.register(KeyCell.self, forCellWithReuseIdentifier: KeyCell.identifier)
         return collectionView
     }()
-
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         collectionView.delegate = self
         collectionView.dataSource = self
-
-
+        
+        
         view.addSubview(collectionView)
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -53,25 +53,21 @@ class KeyboardViewController: UIViewController, UICollectionViewDelegateFlowLayo
             collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-
+        
         for row in letters {
             let chars = Array(row)
             keys.append(chars)
         }
     }
-
+    
     func reloadData() {
         collectionView.reloadData()
     }
-
+    
     func updateKeyColor(letter: String, color: UIColor) {
-            keyColors[letter] = color
-            reloadData()
+        keyColors[letter] = color
+        reloadData()
     }
-
-
-
-
 }
 
 
@@ -92,7 +88,7 @@ extension KeyboardViewController {
         let letter = keys[indexPath.section][indexPath.row]
         let isDelete = (letter == "DEL")
         let isEnter = (letter == "ENTER")
-        let color = keyColors[letter] ?? UIColor(red: 55/255, green: 130/255, blue: 143/255, alpha: 1.0)
+        let color = keyColors[letter] ?? .customDarkPurple
 
         cell.configure(with: letter, isDelete: isDelete, isEnter: isEnter, color: color)
         cell.layer.cornerRadius = 5

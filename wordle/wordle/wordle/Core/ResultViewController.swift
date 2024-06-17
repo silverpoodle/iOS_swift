@@ -45,7 +45,7 @@ class ResultViewController: UIViewController {
     
     let containerView: UIView = {
         let containerView = UIView()
-        containerView.backgroundColor = UIColor(red: 246/225, green: 220/225, blue: 172/225, alpha: 1.0)
+        containerView.backgroundColor = .systemGray4
         containerView.layer.cornerRadius = 16
         containerView.translatesAutoresizingMaskIntoConstraints = false
         return containerView
@@ -60,21 +60,16 @@ class ResultViewController: UIViewController {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .bold)
-        label.textColor = UIColor(red: 7/255, green: 33/255, blue: 75/255, alpha: 1.0)
+        label.textColor = .customBackground
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     let secondaryLabel: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 4
-        label.textColor = UIColor(red: 7/255, green: 33/255, blue: 75/255, alpha: 1.0)
         label.font = .systemFont(ofSize: 16, weight: .medium)
-        label.adjustsFontForContentSizeCategory = true
-        label.adjustsFontSizeToFitWidth = true
-        label.minimumScaleFactor = 0.75
+        label.textColor = .customBackground
         label.textAlignment = .center
-        label.lineBreakMode = .byWordWrapping
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -83,7 +78,7 @@ class ResultViewController: UIViewController {
         let button = UIButton()
         button.layer.cornerRadius = 10
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
-        button.backgroundColor = UIColor(red: 7/255, green: 33/255, blue: 75/255, alpha: 1.0)
+        button.backgroundColor = .customBackground
         button.addTarget(self, action: #selector(resetGameboard), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -107,6 +102,7 @@ class ResultViewController: UIViewController {
         imageView.tintColor = imageColor
         titleLabel.text = titleLabelText ?? ""
         secondaryLabel.attributedText = secondaryLabelText ?? NSAttributedString(string: "")
+        secondaryLabel.textColor = .customDarkPurple
         retryButton.setTitle(retryButtonTitle, for: .normal)
     }
 

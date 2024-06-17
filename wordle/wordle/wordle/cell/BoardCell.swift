@@ -31,7 +31,7 @@ class BoardCell: UICollectionViewCell  {
         ])
         
         contentView.layer.borderWidth = 2.0
-        contentView.layer.borderColor = UIColor(red: 55/255, green: 130/255, blue: 143/255, alpha: 1.0).cgColor
+        contentView.layer.borderColor = UIColor(red: 87/255, green: 75/255, blue: 144/255, alpha: 1.0).cgColor
     }
     
     override func prepareForReuse() {
@@ -44,7 +44,7 @@ class BoardCell: UICollectionViewCell  {
     func configure(with letter: String, color: UIColor, isSelected: Bool = false) {
         label.text = letter.uppercased()
         if isSelected {
-            contentView.backgroundColor = UIColor(red: 254/255, green: 174/255, blue: 111/255, alpha: 1.0)
+            contentView.backgroundColor = .customPink
 //            animateSelection(to: UIColor(red: 254/255, green: 174/255, blue: 111/255, alpha: 1.0))
         } else {
             contentView.backgroundColor = color

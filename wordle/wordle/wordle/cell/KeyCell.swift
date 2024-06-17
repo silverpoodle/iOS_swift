@@ -45,9 +45,9 @@ class KeyCell: UICollectionViewCell {
     func configure(with letter: String, isDelete: Bool = false, isEnter: Bool = false, color: UIColor) {
         label.text = String(letter).uppercased()
         if isDelete {
-            contentView.backgroundColor = .systemRed
+            contentView.backgroundColor = .customRed
         } else if isEnter {
-            contentView.backgroundColor = .systemGreen
+            contentView.backgroundColor = .customGreen
         } else {
             contentView.backgroundColor = color
         }

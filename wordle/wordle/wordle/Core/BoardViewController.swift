@@ -16,15 +16,26 @@ protocol BoardViewControllerDataSource: AnyObject {
 class BoardViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
 
     weak var datasource: BoardViewControllerDataSource?
-    var selectedRow: Int?
+    var selectedRow: Int? {
+        didSet {
+            updateAddButtonState()
+        }
+    }
+    
+    let logoImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "appLogo"))
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.backgroundColor = .clear
+        return imageView
+    }()
 
     let myWordsButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle(" 나의 단어장 ", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
-        button.backgroundColor = .systemYellow
+        button.setImage(UIImage(named: "memo"), for: .normal)
+        button.tintColor = .systemGray4
+        button.backgroundColor = .clear
         button.layer.cornerRadius = 10
-        button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(myWordsButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -32,16 +43,36 @@ class BoardViewController: UIViewController, UICollectionViewDelegateFlowLayout,
 
     let addButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle(" + ", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
-        button.backgroundColor = .systemYellow
-        button.layer.cornerRadius = 10
-        button.setTitleColor(.white, for: .normal)
+        button.setImage(UIImage(named: "add"), for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = .clear
+        button.layer.cornerRadius = 30
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        button.isEnabled = false
         return button
     }()
+    
+    let spacerImageView: UIImageView = {
+         let imageView = UIImageView(image: UIImage(named: "image")) // "spacerImage"는 버튼 사이에 추가할 이미지 이름입니다.
+         imageView.contentMode = .scaleAspectFit
+         imageView.translatesAutoresizingMaskIntoConstraints = false
+         return imageView
+     }()
 
+//    private(set) var collectionView: UICollectionView = {
+//        let layout = UICollectionViewFlowLayout()
+//        layout.minimumInteritemSpacing = 4
+//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+//        collectionView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        collectionView.backgroundColor = .clear
+//
+//        collectionView.register(BoardCell.self, forCellWithReuseIdentifier: BoardCell.identifier)
+//        return collectionView
+//    }()
+    
+    
     private(set) var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 4
@@ -65,26 +96,48 @@ class BoardViewController: UIViewController, UICollectionViewDelegateFlowLayout,
 
         collectionView.delegate = self
         collectionView.dataSource = self
+        
+        let buttonStackView = UIStackView(arrangedSubviews: [myWordsButton, spacerImageView, addButton])
+        buttonStackView.axis = .horizontal
+        buttonStackView.alignment = .center
+        buttonStackView.distribution = .fill
+//        buttonStackView.distribution = .fill
+        buttonStackView.spacing = 10
+        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(collectionView)
-        view.addSubview(myWordsButton)
-        view.addSubview(addButton)
+//        view.addSubview(myWordsButton)
+//        view.addSubview(addButton)
+        view.addSubview(logoImageView)
+        view.addSubview(buttonStackView)
         
         NSLayoutConstraint.activate([
-            myWordsButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
-            myWordsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            myWordsButton.heightAnchor.constraint(equalToConstant: 40),
+            logoImageView.topAnchor.constraint(equalTo: view.topAnchor),
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.heightAnchor.constraint(equalToConstant: 60),
+            logoImageView.widthAnchor.constraint(equalToConstant: 270),
 
-            addButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
-            addButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            buttonStackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 10),
+            buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            buttonStackView.heightAnchor.constraint(equalToConstant: 40),
+
+            myWordsButton.heightAnchor.constraint(equalToConstant: 40),
+            myWordsButton.widthAnchor.constraint(equalToConstant: 40),
+
             addButton.heightAnchor.constraint(equalToConstant: 40),
-            addButton.widthAnchor.constraint(equalTo: addButton.heightAnchor), // 정사각형 설정
+            addButton.widthAnchor.constraint(equalToConstant: 40),
+
+            spacerImageView.heightAnchor.constraint(equalToConstant: 40),
+            spacerImageView.widthAnchor.constraint(lessThanOrEqualToConstant: 250), // 이미지 너비 제한
+
+//            spacerImageView.widthAnchor.constraint(equalTo: buttonStackView.widthAnchor, multiplier: 1.0, constant: -90), // 이미지 너비 설정
 
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            collectionView.topAnchor.constraint(equalTo: myWordsButton.bottomAnchor, constant: 20),
+            collectionView.topAnchor.constraint(equalTo: buttonStackView.bottomAnchor, constant: 20),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+            
     }
 
     func reloadData() {
@@ -95,43 +148,6 @@ class BoardViewController: UIViewController, UICollectionViewDelegateFlowLayout,
         let myWordsVC = MyWordsViewController()
         navigationController?.pushViewController(myWordsVC, animated: true)
     }
-    
-//    @objc func addButtonTapped() {
-//        guard let selectedRow = selectedRow, let currentGuesses = datasource?.currentGuesses else { return }
-//        let selectedGuess = currentGuesses[selectedRow].compactMap { $0 }.joined()
-//        if !selectedGuess.isEmpty {
-//            let meaning = "Example meaning for \(selectedGuess)"
-//            MyWords.shared.addWord(selectedGuess, meaning: meaning)
-//
-//            let wordAddedVC = WordAddedViewController(word: selectedGuess, meaning: meaning)
-//            wordAddedVC.modalPresentationStyle = .overFullScreen
-//            present(wordAddedVC, animated: true, completion: nil)
-//        }
-//    }
-//    @objc func addButtonTapped() {
-//        guard let selectedRow = selectedRow, let currentGuesses = datasource?.currentGuesses else { return }
-//        let selectedGuess = currentGuesses[selectedRow].compactMap { $0 }.joined()
-//        if !selectedGuess.isEmpty {
-//            DictionaryAPI.shared.fetchMeaning(for: selectedGuess) { result in
-//                switch result {
-//                case .success(let meaning):
-//                    DispatchQueue.main.async {
-//                        let wordAddedVC = WordAddedViewController(word: selectedGuess, meaning: meaning)
-//                        MyWords.shared.addWord(selectedGuess, meaning: meaning)
-//                        wordAddedVC.modalPresentationStyle = .overFullScreen
-//                        self.present(wordAddedVC, animated: true, completion: nil)
-//                    }
-//                case .failure(let error):
-//                    DispatchQueue.main.async {
-//                        let wordAddedVC = WordAddedViewController(word: selectedGuess, meaning: "No definition found")
-//                        wordAddedVC.modalPresentationStyle = .overFullScreen
-//                        self.present(wordAddedVC, animated: true, completion: nil)
-//                    }
-//                    print("Error fetching meaning: \(error.localizedDescription)")
-//                }
-//            }
-//        }
-//    }
     
     @objc func addButtonTapped() {
         guard let selectedRow = selectedRow, let currentGuesses = datasource?.currentGuesses else { return }
@@ -157,6 +173,16 @@ class BoardViewController: UIViewController, UICollectionViewDelegateFlowLayout,
             }
         }
     }
+    
+    private func updateAddButtonState() {
+        if selectedRow != nil {
+            addButton.isEnabled = true
+            addButton.backgroundColor = .customPink
+        } else {
+            addButton.isEnabled = false
+            addButton.backgroundColor = .clear
+        }
+    }
 
 }
 
@@ -180,7 +206,7 @@ extension BoardViewController {
         let color = cellColors[indexPath] ?? .clear
         cell.configure(with: datasource?.currentGuesses[indexPath.section][indexPath.row] ?? "", color: color, isSelected: isSelected)
         cell.layer.borderWidth = 1
-        cell.layer.borderColor = UIColor.systemGray3.cgColor
+//        cell.layer.borderColor = .customDarkPurple.cgColor()
 
         return cell
     }

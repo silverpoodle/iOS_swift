@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
 
     let answers = [
-        "AFTER", "LATER", "BLOKE", "THERE", "ULTRA"
+        "AFTER"
     ]
 
     var answer = ""
@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 //        answer = answers.randomElement() ?? "AFTER"
         answer = "AFTER"
-        view.backgroundColor = UIColor(red: 7/255, green: 33/255, blue: 75/255, alpha: 1.0)
+        view.backgroundColor = .customBackground
         addChildren()
     }
 
@@ -52,9 +52,9 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             boardVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             boardVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            boardVC.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 15),
+            boardVC.view.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
             boardVC.view.bottomAnchor.constraint(equalTo: keyboardVC.view.topAnchor),
-            boardVC.view.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6),
+            boardVC.view.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.65),
 
             keyboardVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             keyboardVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -67,24 +67,34 @@ class ViewController: UIViewController {
     }
     
     func showConfetti() {
-        let confettiLayer = CAEmitterLayer()
-        confettiLayer.emitterPosition = CGPoint(x: view.bounds.width / 2, y: -10)
-        confettiLayer.emitterShape = .line
-        confettiLayer.emitterSize = CGSize(width: view.bounds.width, height: 1)
-        confettiLayer.emitterCells = generateConfettiCells()
-
-        view.layer.addSublayer(confettiLayer)
+        guard let window = UIApplication.shared.windows.first else { return }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.3) {
+        let confettiView = UIView(frame: window.frame)
+        confettiView.backgroundColor = .clear
+        window.addSubview(confettiView)
+        
+        let confettiLayer = CAEmitterLayer()
+        confettiLayer.emitterPosition = CGPoint(x: confettiView.bounds.width / 2, y: -10)
+        confettiLayer.emitterShape = .line
+        confettiLayer.emitterSize = CGSize(width: confettiView.bounds.width, height: 1)
+        confettiLayer.emitterCells = generateConfettiCells()
+        
+        confettiView.layer.addSublayer(confettiLayer)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             confettiLayer.birthRate = 0
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                confettiView.removeFromSuperview()
+            }
         }
     }
+
     
     func generateConfettiCells() -> [CAEmitterCell] {
         var confettiCells: [CAEmitterCell] = []
-        for _ in 0..<10 {
+        for _ in 0..<8 {
             let cell = CAEmitterCell()
-            cell.birthRate = 2.5
+            cell.birthRate = 2.0
             cell.lifetime = 8.0
             cell.velocity = CGFloat(350)
             cell.velocityRange = CGFloat(80)
@@ -135,15 +145,6 @@ extension ViewController: KeyBoardViewControllerDelegate {
             }
         }
     }
-
-//    func keyboardViewControllerDidTapEnter(_ vc: KeyboardViewController) {
-//        guard currentGuessIndex < guesses.count else { return }
-//
-//        if isGuessComplete() {
-//            let guess = guesses[currentGuessIndex].compactMap { $0 }
-//            checkGuess(guess: guess)
-//        }
-//    }
     
     func keyboardViewControllerDidTapEnter(_ vc: KeyboardViewController) {
         guard currentGuessIndex < guesses.count else { return }
@@ -155,7 +156,6 @@ extension ViewController: KeyBoardViewControllerDelegate {
                     if isValid {
                         self?.checkGuess(guess: Array(guess).map { String($0) })  // 여기서 Array(guess).map { String($0) } 사용
                     } else {
-//                        self?.showInvalidWordAlert()
                         self?.shakeCurrentRow()
                     }
                 }
@@ -173,12 +173,7 @@ extension ViewController: KeyBoardViewControllerDelegate {
            }
        }
    }
-//
-//    func showInvalidWordAlert() {
-//        let alert = UIAlertController(title: "Invalid Word", message: "The word you entered is not valid. Please try again.", preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//        present(alert, animated: true, completion: nil)
-//    }
+
     
     func checkGuess(guess: [String]) {
         guard guess.count == answer.count else { return }
@@ -202,7 +197,6 @@ extension ViewController: KeyBoardViewControllerDelegate {
             }
         }
 
-        // Check for correct letters in wrong positions
         for i in 0..<guess.count {
             if !correctPositions.contains(i) {
                 let guessChar = guess[i]
@@ -213,26 +207,23 @@ extension ViewController: KeyBoardViewControllerDelegate {
             }
         }
 
-        // Update board colors
         for i in 0..<guess.count {
             let indexPath = IndexPath(item: i, section: currentGuessIndex)
             if correctPositions.contains(i) {
-                boardVC.updateBoxColor(at: indexPath, color: .systemGreen)
-                keyboardVC.updateKeyColor(letter: guess[i], color: .systemGreen)
+                boardVC.updateBoxColor(at: indexPath, color: .customGreen)
+                keyboardVC.updateKeyColor(letter: guess[i], color: .customGreen)
             } else if correctLetters.contains(i) {
-                boardVC.updateBoxColor(at: indexPath, color: .systemYellow)
-                keyboardVC.updateKeyColor(letter: guess[i], color: .systemYellow)
+                boardVC.updateBoxColor(at: indexPath, color: .customYellow)
+                keyboardVC.updateKeyColor(letter: guess[i], color: .customYellow)
             } else {
-                boardVC.updateBoxColor(at: indexPath, color: .systemGray3)
-                keyboardVC.updateKeyColor(letter: guess[i], color: .systemGray2)
+                boardVC.updateBoxColor(at: indexPath, color: .customGray)
+                keyboardVC.updateKeyColor(letter: guess[i], color: .customGray)
             }
         }
 
-//        currentGuessIndex += 1
-//        boardVC.reloadData()
-        
+
         if correctPositions.count == answer.count {
-//                showResult(isWin: true)
+            showResult(isWin: true)
             showConfetti()
             
         } else if currentGuessIndex == guesses.count - 1 {
@@ -258,9 +249,9 @@ extension ViewController: BoardViewControllerDataSource {
 extension ViewController {
     func showResult(isWin: Bool) {
         let title = isWin ? "You Win!" : "Game Over"
-        let message = isWin ? "Congratulations! You've guessed the word." : "The correct word was \(answer)."
+        let message = isWin ? "축하합니다! 정답은 \(answer) 입니다." : "아쉽네요. 정답은 \(answer) 입니다."
         let image = isWin ? "checkmark.circle" : "xmark.circle"
-        let imageColor: UIColor = isWin ? .systemGreen : .systemRed
+        let imageColor: UIColor = isWin ? .customGreen : .customRed
 
         let secondaryLabelText = NSAttributedString(string: message, attributes: [
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
@@ -278,7 +269,11 @@ extension ViewController {
         
         resultVC.modalPresentationStyle = .overFullScreen
         resultVC.modalTransitionStyle = .crossDissolve
-        present(resultVC, animated: true, completion: nil)
+        present(resultVC, animated: true, completion: {
+            if isWin {
+                self.showConfetti()
+            }
+        })
     }
 }
 
