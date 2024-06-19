@@ -25,7 +25,7 @@
 <br>
 </div>
 
-## 🪜 시연 영상 (유튜브 링크 - 아래 이미지 클릭 시 이동합니다)
+## 🪜 시연 영상 ([https://youtu.be/_26yNXK7ZzQ)](https://youtu.be/_26yNXK7ZzQ))
 [![Video Label](https://github.com/silverpoodle/iOS_swift/assets/88484476/142dc667-a533-4a3d-8732-8b277eb530a2)](https://youtu.be/_26yNXK7ZzQ)
 
 
