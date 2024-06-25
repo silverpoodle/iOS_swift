@@ -25,7 +25,7 @@
 <br>
 </div>
 
-## 🪜 시연 영상 ([https://youtu.be/_26yNXK7ZzQ)](https://youtu.be/_26yNXK7ZzQ))
+## 🪜 시연 영상
 [![Video Label](https://github.com/silverpoodle/iOS_swift/assets/88484476/142dc667-a533-4a3d-8732-8b277eb530a2)](https://youtu.be/_26yNXK7ZzQ)
 
 
